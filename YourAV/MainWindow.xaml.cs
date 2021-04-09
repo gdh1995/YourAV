@@ -14,8 +14,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using MaterialDesignColors;
-using MaterialDesignThemes.Wpf;
 
 using static YourAV.ManagementHelper;
 
@@ -28,8 +26,9 @@ namespace YourAV
     {
         public string AVName { get; set; } = "YourAV";
         public string AVGuid { get; set; } = Guid.NewGuid().ToString();
-        public PackIconKind IconKind
-            => IsAntivirusInstalled() ? PackIconKind.CheckboxMarkedCircleOutline : PackIconKind.AlertCircleOutline;
+        public SolidColorBrush AccentColorBrush
+            => IsAntivirusInstalled() ? Brushes.ForestGreen : Brushes.DarkRed;
+        public string StatusText => IsAntivirusInstalled() ? "\u2713" : "\u274C";
         public string ButtonContent
             => IsAntivirusInstalled() ? "关闭" : "开启";
         public MainWindow()
@@ -59,8 +58,8 @@ namespace YourAV
                 //AddAntivirus2(AVName, AVGuid);
             }
             RestartService("Windows Management Instrumentation");
-            App.ChangeTheme();
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IconKind)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AccentColorBrush)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(StatusText)));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ButtonContent)));
         }
 
